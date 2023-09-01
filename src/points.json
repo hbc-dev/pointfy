@@ -14,6 +14,6 @@
         }
     },
     "search" : {
-        "url" : "https://api.spotify.com/v1/search?q=$name $query&type=$type"
+        "url" : "https://api.spotify.com/v1/search?q=$name $query&type=$type&limit=$limit&offset=$offset&include_external=$include_external"
     }
 }

@@ -18,20 +18,25 @@ const conexion = new Connect({
 
     console.debug(token);
 
-    // search album by id
-    let album = await conexion.searchAlbum({
-        id: "5VoeRuTrGhTbKelUfwymwu"
-    });
-
-    console.debug(`Found album (${album.name}) with ${album.total_tracks} tracks`);
-
     // search album by name
-    let beefie = (await conexion.searchAlbum({
-        id: "Traumatismo Kraneoencefalico",
+    let SimplifiedAlbum = (await conexion.searchByName({
+        name: "Born",
+        type: "album",
         query: {
-            artist: "Goa"
-        }
+            artist: "Lana del"
+        },
+        limit: 1,
+        offset: 0,
+        include_external: "audio"
     })).albums.items[0];
 
-    console.debug(`Found album (${beefie?.name}) with ${beefie?.total_tracks} tracks`);
+    console.debug(`Found album: ${SimplifiedAlbum.name} (${SimplifiedAlbum.id})`);
+
+    // search album by id
+    let album = await conexion.searchAlbum({
+        id: SimplifiedAlbum.id,
+        market: "ES"
+    });
+
+    console.debug(`Found album (${album?.name}) with ${album?.total_tracks} tracks`);
 })();

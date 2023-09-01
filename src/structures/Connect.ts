@@ -5,8 +5,10 @@ import {
     AccessToken,
     AlbumGetterOptions,
     Album,
-    SearchByNameOptions
-} from "../types/Connect";
+    SearchByNameOptions,
+    SearchByNameResponseAlbums,
+    SearchByNameResponse
+} from "../@types";
 
 export class Connect {
     public readonly clientId: string;
@@ -50,18 +52,18 @@ export class Connect {
 
         return this._token;
     }
-
+    
     // missing search types
     // option to get the first search or all the search results
-    async searchAlbum(options: AlbumGetterOptions): Promise<Album | any> {
+    async searchAlbum(options: AlbumGetterOptions): Promise<Album> {
         const point = points.albums;
-        let {id, market, query} = options;
+        let {id, market} = options;
 
         const httpRequest = replace(point.url, {
             $id: id.trim(),
             $market: market
         });
-
+        
         let request = await fetch(httpRequest, {
             method: "GET",
             headers: {
@@ -69,20 +71,16 @@ export class Connect {
             }
         });
 
-        if (request.status !== 200) return this.searchByName({
-            name: id,
-            type: "album",
-            query: query ?? {}
-        });
+        if (request.status !== 200) throw new Error(request.statusText);
 
         return request.json();
     }
 
     // missing search types
     // option to get the first search or all the search results
-    async searchByName(options: SearchByNameOptions): Promise<any> {
+    async searchByName(options: SearchByNameOptions): Promise<SearchByNameResponse> {
         let point = points.search;
-        let {query, type, name} = options;
+        let {query, type, name, limit, offset, include_external} = options;
 
         let queryString = "";
 
@@ -93,7 +91,10 @@ export class Connect {
         queryString = replace(point.url, {
             $query: queryString,
             $name: name,
-            $type: type
+            $type: type,
+            $limit: limit ?? 20,
+            $offset: offset ?? 0,
+            $include_external: include_external
         });
 
         let request = await fetch(queryString, {
@@ -103,7 +104,7 @@ export class Connect {
             }
         });
 
-        if (request.status !== 200) throw Error(request.statusText+` | ${request.url}`);
+        if (request.status !== 200) throw Error(request.statusText);
         return request.json();
     }
 
