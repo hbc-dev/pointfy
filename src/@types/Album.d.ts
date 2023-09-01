@@ -7,6 +7,13 @@ export interface AlbumGetterOptions {
     market?: available_markets;
 }
 
+export interface AlbumTracksGetterOptions {
+    id: string;
+    market?: available_markets;
+    limit?: number;
+    offset?: number;
+}
+
 export interface QueryAlbum {
     album?: string;
     artist?: string

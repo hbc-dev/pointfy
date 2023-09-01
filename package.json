@@ -1,16 +1,14 @@
 {
-  "dependencies": {
-    "dotenv": "^16.3.1"
-  },
   "devDependencies": {
-    "@types/node": "^20.5.3"
+    "@types/node": "^20.5.3",
+    "dotenv": "^16.3.1"
   },
   "name": "pointfy",
   "version": "1.2.0",
-  "main": "./src/test/test",
+  "main": "./src/structures/Client",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx ts-node ./src/test/test"
+    "dev": "NODE_OPTIONS='--no-warnings' ts-node ./src/test/index.test"
   },
   "keywords": [],
   "author": "",

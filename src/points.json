@@ -9,6 +9,7 @@
     },
     "albums" : {
         "url" : "https://api.spotify.com/v1/albums/$id",
+        "tracks" : "https://api.spotify.com/v1/albums/$id/tracks?limit=$limit&offset=$offset&$market",
         "headers" : {
             "Authorization" : "Bearer $token"
         }

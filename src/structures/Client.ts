@@ -6,11 +6,12 @@ import {
     AlbumGetterOptions,
     Album,
     SearchByNameOptions,
-    SearchByNameResponseAlbums,
-    SearchByNameResponse
+    SearchByNameResponse,
+    AlbumTrack,
+    AlbumTracksGetterOptions
 } from "../@types";
 
-export class Connect {
+export class Client {
     public readonly clientId: string;
     public readonly clientSecret: string;
     private _token: Promise<AccessToken>;
@@ -35,13 +36,13 @@ export class Connect {
             })
         });
 
-        if (request.status !== 200) throw Error(request.statusText);
-        
-        let token = await request.json();
+        let response = await request.json();
+
+        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
 
         return {
-            ...token,
-            expires_date: Date.now() + token.expires_in
+            ...response,
+            expires_date: Date.now() + (response.expires_in * 1000)
         }
     }
 
@@ -53,15 +54,13 @@ export class Connect {
         return this._token;
     }
     
-    // missing search types
-    // option to get the first search or all the search results
     async searchAlbum(options: AlbumGetterOptions): Promise<Album> {
         const point = points.albums;
         let {id, market} = options;
 
         const httpRequest = replace(point.url, {
             $id: id.trim(),
-            $market: market
+            $market: market ? `?market=${market}` : ""
         });
         
         let request = await fetch(httpRequest, {
@@ -71,13 +70,37 @@ export class Connect {
             }
         });
 
-        if (request.status !== 200) throw new Error(request.statusText);
+        let response = await request.json();
+        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
 
-        return request.json();
+        return response;
     }
 
-    // missing search types
-    // option to get the first search or all the search results
+    async searchAlbumTracks(options: AlbumTracksGetterOptions): Promise<AlbumTrack> {
+        const point = points.albums;
+        let {id, market, limit, offset} = options;
+
+        const httpRequest = replace(point.tracks, {
+            $id: id.trim(),
+            $market: market ? `market=${market}` : "",
+            $limit: limit ?? 20,
+            $offset: offset ?? 0
+        });
+
+        let request = await fetch(httpRequest, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${(await this._token).access_token}`
+            }
+        });
+
+        let response = await request.json();
+
+        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
+        return response;
+    }
+
+    // some functions to manage the response
     async searchByName(options: SearchByNameOptions): Promise<SearchByNameResponse> {
         let point = points.search;
         let {query, type, name, limit, offset, include_external} = options;
@@ -104,8 +127,10 @@ export class Connect {
             }
         });
 
-        if (request.status !== 200) throw Error(request.statusText);
-        return request.json();
+        let response = await request.json();
+
+        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
+        return response;
     }
 
     get token(): Promise<AccessToken> {return this._token;}
