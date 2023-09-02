@@ -1,5 +1,5 @@
 import points from "../points.json";
-import {replace} from "../utils/index";
+import { replace, request } from "../utils/index";
 import {
     Options,
     AccessToken,
@@ -42,24 +42,13 @@ export class Client {
     }
 
     async getToken(): Promise<AccessToken> {
-        const point = points.access_token;
-
         if (this._token) return this._token;
 
-        let request = await fetch(point.url, {
-            method: "POST",
-            headers: {
-                ...point.headers
-            },
-            body: replace(point.body, {
-                $CLIENT_ID: this.clientId,
-                $CLIENT_SECRET: this.clientSecret
-            })
+        const response = await request({
+            client: this,
+            url: points.access_token.url,
+            type: "get_access_token"
         });
-
-        let response = await request.json();
-
-        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
 
         return {
             ...response,
@@ -76,319 +65,229 @@ export class Client {
     }
     
     async searchAlbum(options: AlbumGetterOptions): Promise<Album> {
-        const token = await this.getToken();
-        const point = points.albums;
         let {id, market} = options;
 
-        const httpRequest = replace(point.url, {
-            $id: id,
-            $market: market ? `?market=${market}` : ""
-        });
-        
-        let request = await fetch(httpRequest, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token.access_token}`
+        const response = await request({
+            client: this,
+            type: "bearer_token_action",
+            url: points.albums.url,
+            values: {
+                $id: id,
+                market: market ? `?market=${market}` : ""
             }
         });
-
-        let response = await request.json();
-        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
 
         return response;
     }
 
     async searchAlbumTracks(options: AlbumTracksGetterOptions): Promise<AlbumTrack> {
-        const token = await this.getToken();
-        const point = points.albums;
         let {id, market, limit, offset} = options;
 
-        const httpRequest = replace(point.tracks, {
-            $id: id,
-            $market: market ? `market=${market}` : "",
-            $limit: limit ?? 20,
-            $offset: offset ?? 0
-        });
-
-        let request = await fetch(httpRequest, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token.access_token}`
+        const response = await request({
+            client: this,
+            type: "bearer_token_action",
+            url: points.albums.tracks,
+            values: {
+                $id: id,
+                $market: market ? `market=${market}` : "",
+                $limit: limit ?? 20,
+                $offset: offset ?? 0
             }
         });
 
-        let response = await request.json();
-
-        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
         return response;
     }
 
     async searchNewReleases(options: NewReleasesGetterOptions = {}): Promise<AlbumPages> {
-        const token = await this.getToken();
-        const point = points.albums;
         let {country, limit, offset} = options;
 
-        let httpRequest = replace(point.new_releases, {
-            $limit: limit ?? 20,
-            $offset: offset ?? 0,
-            $country: country ? `&contry=${country}` : ""
-        });
-
-        let request = await fetch(httpRequest, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token.access_token}`
+        const response = await request({
+            client: this,
+            type: "bearer_token_action",
+            url: points.albums.new_releases,
+            values: {
+                $limit: limit ?? 20,
+                $offset: offset ?? 0,
+                $country: country ? `&country=${country}` : ""
             }
         });
 
-        let response = await request.json();
-
-        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
         return response.albums;
     }
 
     async searchArtist(options: ArtistGetterOptions): Promise<Artist> {
-        const token = await this.getToken();
-        const point = points.artists;
+        let {id} = options;
 
-        let httpRequest = replace(point.url, {
-            $id: options.id
-        });
-
-        let request = await fetch(httpRequest, {
-            method: "GET",
-            headers: {
-                "Authorization" : `Bearer ${token.access_token}`
+        const response = await request({
+            client: this,
+            type: "bearer_token_action",
+            url: points.artists.url,
+            values: {
+                $id: id
             }
         });
 
-        let response = await request.json();
-
-        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
         return response;
     }
 
     async searchArtistAlbums(options: ArtistAlbumsGetterOptions): Promise<AlbumPages> {
-        const token = await this.getToken();
-        const point = points.artists;
         let {id, market, include_groups, offset, limit} = options;
 
-        let httpRequest = replace(point.albums, {
-            $id: id,
-            $market: market ? `&market=${market}` : "",
-            $include_groups: include_groups ? `&include_groups=${include_groups.join(',')}` : "",
-            $limit: limit ?? 20,
-            $offset: offset ?? 0
-        });
-
-        let request = await fetch(httpRequest, {
-            method: "GET",
-            headers: {
-                "Authorization" : `Bearer ${token.access_token}`
+        const response = request({
+            client: this,
+            type: "bearer_token_action",
+            url: points.artists.albums,
+            values: {
+                $id: id,
+                $market: market ? `&market=${market}` : "",
+                $include_groups: include_groups ? `&include_groups=${include_groups.join(',')}` : "",
+                $limit: limit ?? 20,
+                $offset: offset ?? 0
             }
         });
 
-        let response = await request.json();
-
-        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`)
         return response;
     }
 
     async searchArtistTopTracks(options: ArtistTopTracksGetterOptions): Promise<Array<Track>> {
-        const token = await this.getToken();
-        const point = points.artists;
         let {id, market} = options;
 
-        let httpRequest = replace(point.top_tracks, {
-            $id: id,
-            $market: market ? `?market=${market}` : ""
-        });
-
-        let request = await fetch(httpRequest, {
-            method: "GET",
-            headers: {
-                "Authorization" : `Bearer ${token.access_token}`
+        const response = await request({
+            client: this,
+            type: "bearer_token_action",
+            url: points.artists.top_tracks,
+            values: {
+                $id: id,
+                $market: market ? `?market=${market}` : ""
             }
         });
 
-        let response = await request.json();
-        
-        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`)
         return response.tracks;
     }
 
     async searchArtistRelatedArtists(options: ArtistRelatedArtistsGetterOptions): Promise<Array<Artist>> {
-        const token = await this.getToken();
-        const point = points.artists;
+        let {id} = options;
 
-        let httpRequest = replace(point.related_artists, {
-            $id: options.id
-        });
-
-        let request = await fetch(httpRequest, {
-            method: "GET",
-            headers: {
-                "Authorization" : `Bearer ${token.access_token}`
+        const response = await request({
+            client: this,
+            type: "bearer_token_action",
+            url: points.artists.related_artists,
+            values: {
+                $id: id
             }
         });
 
-        let response = await request.json();
-
-        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
         return response.artists;
     }
 
     async searchAudioBook(options: AudioBookGetterOptions): Promise<AudioBook> {
-        const token = await this.getToken();
-        const point = points.audio_books;
         let {id, market} = options;
 
-        let httpRequest = replace(point.url, {
-            $id: id,
-            $market: market ? `?market=${market}` : ""
-        });
-
-        let request = await fetch(httpRequest, {
-            method: "GET",
-            headers: {
-                "Authorization" : `Bearer ${token.access_token}`
+        const response = await request({
+            client: this,
+            type: "bearer_token_action",
+            url: points.audio_books.url,
+            values: {
+                $id: id,
+                $market: market ? `?market=${market}` : ""
             }
         });
 
-        let response = await request.json();
-
-        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
         return response;
     }
 
     async searchAudioBookChapters(options: AudioBookChapetersGetterOptions): Promise<ChaptersPages> {
-        const token = await this.getToken();
-        const point = points.audio_books;
         let {id, limit, offset, market} = options;
-        
-        let httpRequest = replace(point.chapters, {
-            $id: id,
-            $limit: limit ?? 20,
-            $offset: offset ?? 0,
-            $market: market ? `&market=${market}` : ""
-        });
 
-        let request = await fetch(httpRequest, {
-            method: "GET",
-            headers: {
-                "Authorization" : `Bearer ${token.access_token}`
+        const response = await request({
+            client: this,
+            type: "bearer_token_action",
+            url: points.audio_books.chapters,
+            values: {
+                $id: id,
+                $limit: limit ?? 20,
+                $offset: offset ?? 0,
+                $market: market ? `&market=${market}` : ""    
             }
         });
 
-        let response = await request.json();
-
-        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
         return response;
     }
 
     async searchCategory(options: CategoryGetterOptions): Promise<Category> {
-        const token = await this.getToken();
-        const point = points.categories;
         let {category_id, country, locale} = options;
-        
-        let httpRequest = replace(point.url, {
-            $category_id: (country && locale)? `${category_id}?$country&$locale` : country ? `${category_id}?$country` : locale ? `${category_id}?$locale` : category_id,
-            $country: country ? `country=${country}` : "",
-            $locale: locale ? `locale=${locale}` : ""
-        });
 
-        let request = await fetch(httpRequest, {
-            method: "GET",
-            headers: {
-                "Authorization" : `Bearer ${token.access_token}`
+        const response = await request({
+            client: this,
+            type: "bearer_token_action",
+            url: points.categories.url,
+            values: {
+                $category_id: (country && locale)? `${category_id}?$country&$locale` : country ? `${category_id}?$country` : locale ? `${category_id}?$locale` : category_id,
+                $country: country ? `country=${country}` : "",
+                $locale: locale ? `locale=${locale}` : ""
             }
         });
 
-        let response = await request.json();
-
-        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
         return response;
     }
 
     async searchCategories(options: CategoriesGetterOptions = {}): Promise<CategoryPages> {
-        const token = await this.getToken();
-        const point = points.categories;
         let {country, locale, limit, offset} = options;
 
-        let httpRequest = replace(point.several, {
-            $limit: limit ?? 20,
-            $offset: offset ?? 0,
-            $country: country ? `&country=${country}` : "",
-            $locale: locale ? `&locale=${locale}` : ""
-        });
-
-        let request = await fetch(httpRequest, {
-            method: "GET",
-            headers: {
-                "Authorization" : `Bearer ${token.access_token}`
+        const response = await request({
+            client: this,
+            type: "bearer_token_action",
+            url: points.categories.several,
+            values: {
+                $limit: limit ?? 20,
+                $offset: offset ?? 0,
+                $country: country ? `&country=${country}` : "",
+                $locale: locale ? `&locale=${locale}` : "" 
             }
         });
 
-        let response = await request.json();
-
-        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`)
         return response.categories;
     }
 
     async searchChapter(options: ChapterGetterOptions): Promise<Chapter> {
-        const token = await this.getToken();
-        const point = points.chapters;
         let {id, market} = options;
 
-        const httpRequest = replace(point.url, {
-            $id: id,
-            $market: market ? `?market=${market}` : ""
-        });
-        
-        let request = await fetch(httpRequest, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token.access_token}`
+        const response = await request({
+            client: this,
+            type: "bearer_token_action",
+            url: points.chapters.url,
+            values: {
+                $id: id,
+                $market: market ? `?market=${market}` : ""
             }
         });
-
-        let response = await request.json();
-        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
 
         return response;
     }
 
     // some functions to manage the response
     async searchByName(options: SearchByNameOptions): Promise<SearchByNameResponse> {
-        const token = await this.getToken();
-        let point = points.search;
         let {query, type, name, limit, offset, include_external} = options;
-
         let queryString = "";
 
         if (query) for (let key of Object.keys(query)) {
             queryString += ` ${key}:${query[key]}`
         }
 
-        queryString = replace(point.url, {
-            $query: queryString,
-            $name: name,
-            $type: type,
-            $limit: limit ?? 20,
-            $offset: offset ?? 0,
-            $include_external: include_external
-        });
-
-        let request = await fetch(queryString, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token.access_token}`
+        const response = await request({
+            client: this,
+            type: "bearer_token_action",
+            url: points.search.url,
+            values: {
+                $query: queryString,
+                $name: name,
+                $type: type,
+                $limit: limit ?? 20,
+                $offset: offset ?? 0,
+                $include_external: include_external
             }
         });
 
-        let response = await request.json();
-
-        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
         return response;
     }
 
