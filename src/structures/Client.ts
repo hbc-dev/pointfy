@@ -34,16 +34,17 @@ import {
 export class Client {
     public readonly clientId: string;
     public readonly clientSecret: string;
-    private _token: Promise<AccessToken>;
+    private _token?: AccessToken;
 
     constructor(options: Options) {
         this.clientId = options.clientId;
         this.clientSecret = options.clientSecret;
-        this._token = this.getToken();
     }
 
     async getToken(): Promise<AccessToken> {
         const point = points.access_token;
+
+        if (this._token) return this._token;
 
         let request = await fetch(point.url, {
             method: "POST",
@@ -69,12 +70,13 @@ export class Client {
     async refreshToken(): Promise<AccessToken> {
         let token = await this._token;
         
-        if (Date.now() >= token.expires_date) this._token = this.getToken();
+        if (Date.now() >= token.expires_date) this._token = await this.getToken();
 
         return this._token;
     }
     
     async searchAlbum(options: AlbumGetterOptions): Promise<Album> {
+        const token = await this.getToken();
         const point = points.albums;
         let {id, market} = options;
 
@@ -86,7 +88,7 @@ export class Client {
         let request = await fetch(httpRequest, {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${(await this._token).access_token}`
+                "Authorization": `Bearer ${token.access_token}`
             }
         });
 
@@ -97,6 +99,7 @@ export class Client {
     }
 
     async searchAlbumTracks(options: AlbumTracksGetterOptions): Promise<AlbumTrack> {
+        const token = await this.getToken();
         const point = points.albums;
         let {id, market, limit, offset} = options;
 
@@ -110,7 +113,7 @@ export class Client {
         let request = await fetch(httpRequest, {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${(await this._token).access_token}`
+                "Authorization": `Bearer ${token.access_token}`
             }
         });
 
@@ -121,6 +124,7 @@ export class Client {
     }
 
     async searchNewReleases(options: NewReleasesGetterOptions = {}): Promise<AlbumPages> {
+        const token = await this.getToken();
         const point = points.albums;
         let {country, limit, offset} = options;
 
@@ -133,7 +137,7 @@ export class Client {
         let request = await fetch(httpRequest, {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${(await this._token).access_token}`
+                "Authorization": `Bearer ${token.access_token}`
             }
         });
 
@@ -144,6 +148,7 @@ export class Client {
     }
 
     async searchArtist(options: ArtistGetterOptions): Promise<Artist> {
+        const token = await this.getToken();
         const point = points.artists;
 
         let httpRequest = replace(point.url, {
@@ -153,7 +158,7 @@ export class Client {
         let request = await fetch(httpRequest, {
             method: "GET",
             headers: {
-                "Authorization" : `Bearer ${(await this.token).access_token}`
+                "Authorization" : `Bearer ${token.access_token}`
             }
         });
 
@@ -164,6 +169,7 @@ export class Client {
     }
 
     async searchArtistAlbums(options: ArtistAlbumsGetterOptions): Promise<AlbumPages> {
+        const token = await this.getToken();
         const point = points.artists;
         let {id, market, include_groups, offset, limit} = options;
 
@@ -178,7 +184,7 @@ export class Client {
         let request = await fetch(httpRequest, {
             method: "GET",
             headers: {
-                "Authorization" : `Bearer ${(await this._token).access_token}`
+                "Authorization" : `Bearer ${token.access_token}`
             }
         });
 
@@ -189,6 +195,7 @@ export class Client {
     }
 
     async searchArtistTopTracks(options: ArtistTopTracksGetterOptions): Promise<Array<Track>> {
+        const token = await this.getToken();
         const point = points.artists;
         let {id, market} = options;
 
@@ -200,7 +207,7 @@ export class Client {
         let request = await fetch(httpRequest, {
             method: "GET",
             headers: {
-                "Authorization" : `Bearer ${(await this._token).access_token}`
+                "Authorization" : `Bearer ${token.access_token}`
             }
         });
 
@@ -211,6 +218,7 @@ export class Client {
     }
 
     async searchArtistRelatedArtists(options: ArtistRelatedArtistsGetterOptions): Promise<Array<Artist>> {
+        const token = await this.getToken();
         const point = points.artists;
 
         let httpRequest = replace(point.related_artists, {
@@ -220,7 +228,7 @@ export class Client {
         let request = await fetch(httpRequest, {
             method: "GET",
             headers: {
-                "Authorization" : `Bearer ${(await this.token).access_token}`
+                "Authorization" : `Bearer ${token.access_token}`
             }
         });
 
@@ -231,6 +239,7 @@ export class Client {
     }
 
     async searchAudioBook(options: AudioBookGetterOptions): Promise<AudioBook> {
+        const token = await this.getToken();
         const point = points.audio_books;
         let {id, market} = options;
 
@@ -242,7 +251,7 @@ export class Client {
         let request = await fetch(httpRequest, {
             method: "GET",
             headers: {
-                "Authorization" : `Bearer ${(await this.token).access_token}`
+                "Authorization" : `Bearer ${token.access_token}`
             }
         });
 
@@ -253,6 +262,7 @@ export class Client {
     }
 
     async searchAudioBookChapters(options: AudioBookChapetersGetterOptions): Promise<ChaptersPages> {
+        const token = await this.getToken();
         const point = points.audio_books;
         let {id, limit, offset, market} = options;
         
@@ -266,7 +276,7 @@ export class Client {
         let request = await fetch(httpRequest, {
             method: "GET",
             headers: {
-                "Authorization" : `Bearer ${(await this._token).access_token}`
+                "Authorization" : `Bearer ${token.access_token}`
             }
         });
 
@@ -277,6 +287,7 @@ export class Client {
     }
 
     async searchCategory(options: CategoryGetterOptions): Promise<Category> {
+        const token = await this.getToken();
         const point = points.categories;
         let {category_id, country, locale} = options;
         
@@ -289,7 +300,7 @@ export class Client {
         let request = await fetch(httpRequest, {
             method: "GET",
             headers: {
-                "Authorization" : `Bearer ${(await this._token).access_token}`
+                "Authorization" : `Bearer ${token.access_token}`
             }
         });
 
@@ -300,6 +311,7 @@ export class Client {
     }
 
     async searchCategories(options: CategoriesGetterOptions = {}): Promise<CategoryPages> {
+        const token = await this.getToken();
         const point = points.categories;
         let {country, locale, limit, offset} = options;
 
@@ -313,7 +325,7 @@ export class Client {
         let request = await fetch(httpRequest, {
             method: "GET",
             headers: {
-                "Authorization" : `Bearer ${(await this._token).access_token}`
+                "Authorization" : `Bearer ${token.access_token}`
             }
         });
 
@@ -324,6 +336,7 @@ export class Client {
     }
 
     async searchChapter(options: ChapterGetterOptions): Promise<Chapter> {
+        const token = await this.getToken();
         const point = points.chapters;
         let {id, market} = options;
 
@@ -335,7 +348,7 @@ export class Client {
         let request = await fetch(httpRequest, {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${(await this._token).access_token}`
+                "Authorization": `Bearer ${token.access_token}`
             }
         });
 
@@ -347,6 +360,7 @@ export class Client {
 
     // some functions to manage the response
     async searchByName(options: SearchByNameOptions): Promise<SearchByNameResponse> {
+        const token = await this.getToken();
         let point = points.search;
         let {query, type, name, limit, offset, include_external} = options;
 
@@ -368,7 +382,7 @@ export class Client {
         let request = await fetch(queryString, {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${(await this._token).access_token}`
+                "Authorization": `Bearer ${token.access_token}`
             }
         });
 
@@ -385,6 +399,4 @@ export class Client {
     getGenres(): Array<available_genres> {
         return <Array<available_genres>>points.genres;
     }
-
-    get token(): Promise<AccessToken> {return this._token;}
 }

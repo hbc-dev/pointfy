@@ -12,5 +12,5 @@ export default async function categoriesList(options: Options): Promise<void> {
     let categories = await client.searchCategories(searchOptions);
     let list = categories.items.map(category => `${category.name} (${category.id})`).join('\n')
 
-    // console.log(`Available categories (${categories.total}):\n\n${list}`);
+    // console.debug(`Available categories (${categories.total}):\n\n${list}`);
 }
