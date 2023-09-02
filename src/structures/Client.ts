@@ -15,7 +15,12 @@ import {
     ArtistAlbumsGetterOptions,
     Track,
     ArtistTopTracksGetterOptions,
-    ArtistRelatedArtistsGetterOptions
+    ArtistRelatedArtistsGetterOptions,
+    available_markets,
+    available_genres,
+    NewReleasesGetterOptions,
+    AudioBookGetterOptions,
+    AudioBook
 } from "../@types";
 
 export class Client {
@@ -107,6 +112,29 @@ export class Client {
         return response;
     }
 
+    async searchNewReleases(options: NewReleasesGetterOptions = {}): Promise<AlbumPages> {
+        const point = points.albums;
+        let {country, limit, offset} = options;
+
+        let httpRequest = replace(point.new_releases, {
+            $limit: limit ?? 20,
+            $offset: offset ?? 0,
+            $country: country ? `&contry=${country}` : ""
+        });
+
+        let request = await fetch(httpRequest, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${(await this._token).access_token}`
+            }
+        });
+
+        let response = await request.json();
+
+        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
+        return response.albums;
+    }
+
     async searchArtist(options: ArtistGetterOptions): Promise<Artist> {
         const point = points.artists;
 
@@ -194,6 +222,32 @@ export class Client {
         return response.artists;
     }
 
+    async searchAudioBook(options: AudioBookGetterOptions): Promise<AudioBook> {
+        const point = points.audio_books;
+        let {id, market} = options;
+
+        let httpRequest = replace(point.url, {
+            $id: id,
+            $market: market ? `?market=${market}` : ""
+        });
+
+        let request = await fetch(httpRequest, {
+            method: "GET",
+            headers: {
+                "Authorization" : `Bearer ${(await this.token).access_token}`
+            }
+        });
+
+        let response = await request.json();
+
+        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
+        return response;
+    }
+
+    async searchAudioBookChapters(options): Promise<void> {
+        
+    }
+
     // some functions to manage the response
     async searchByName(options: SearchByNameOptions): Promise<SearchByNameResponse> {
         let point = points.search;
@@ -225,6 +279,14 @@ export class Client {
 
         if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
         return response;
+    }
+
+    getMarkets(): Array<available_markets> {
+        return <Array<available_markets>>points.markets;
+    }
+
+    getGenres(): Array<available_genres> {
+        return <Array<available_genres>>points.genres;
     }
 
     get token(): Promise<AccessToken> {return this._token;}

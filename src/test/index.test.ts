@@ -8,8 +8,12 @@ import refreshToken from "./refreshToken.test";
 import searchAlbum from "./searchAlbum.test";
 import searchArtist from "./searchArtist.test";
 import searchAlbumsChart from "./searchAlbumsChart.test";
+import newReleases from "./newReleases.test";
 import topTenTracks from "./topTenTracks.test";
 import relatedArtist from "./relatedArtist.test"
+import marketsList from "./marketsList.test";
+import genresList from "./genresList.test";
+import searchAudioBook from "./searchAudioBook.test";
 
 (async () => {
     // init a client instance
@@ -62,6 +66,9 @@ import relatedArtist from "./relatedArtist.test"
         }
     });
 
+    // search a new realeses list
+    newReleases({client});
+
     // search the top 10 of an artist by id
     topTenTracks({
         client,
@@ -76,6 +83,22 @@ import relatedArtist from "./relatedArtist.test"
         client,
         searchOptions: {
             id: "5szilpXHcwOqnyKLqGco5j"
+        }
+    });
+
+    // get a list of available markets
+    marketsList({client});
+
+    // get a list of available genres
+    genresList({client});
+
+    // get an audiobook by name (Note: no id works)
+    searchAudioBook({
+        client,
+        searchOptions: {
+            name: "Game of Thrones",
+            type: "audiobook",
+            limit: 1
         }
     });
 })();

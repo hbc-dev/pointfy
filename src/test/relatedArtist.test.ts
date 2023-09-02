@@ -13,5 +13,5 @@ export default async function relatedArtist(options: Options): Promise<void> {
     let artist = await client.searchArtist(searchOptions);
     let list = relatedArtists.map(artist => `${artist.name} (${artist.id})`).join('\n');
 
-    console.debug(`Found ${relatedArtists.length} related artists of ${artist.name}: \n\n${list}`);
+    // console.debug(`Found ${relatedArtists.length} related artists of ${artist.name}: \n\n${list}`);
 }

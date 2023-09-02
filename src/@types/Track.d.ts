@@ -1,4 +1,4 @@
-import {SimplifiedAlbum, available_markets, SimplifiedArtist, Artist} from "./index";
+import {SimplifiedAlbum, available_markets, SimplifiedArtist} from "./index";
 
 export interface Track extends SimplifiedTrack {
     album?: SimplifiedAlbum;

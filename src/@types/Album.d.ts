@@ -3,7 +3,8 @@ import {
     Images,
     SimplifiedArtist,
     SimplifiedTrack,
-    SearchByNameProperties
+    SearchByNameProperties,
+    Copyrights
 } from "./index";
 
 export interface AlbumGetterOptions {
@@ -18,6 +19,12 @@ export interface AlbumTracksGetterOptions {
     offset?: number;
 }
 
+export interface NewReleasesGetterOptions {
+    country?: available_markets;
+    limit?: number;
+    offset?: number;
+}
+
 export interface QueryAlbum {
     album?: string;
     artist?: string
@@ -27,7 +34,7 @@ export interface QueryAlbum {
 
 export interface Album extends SimplifiedAlbum {
     tracks: Array<AlbumTrack>;
-    copyrights: Array<AlbumCopyright>;
+    copyrights: Array<Copyrights>;
     external_ids: AlbumExternalIDs;
     genres: Array<string>;
     label: string;
@@ -40,11 +47,6 @@ export interface AlbumExternalURLS {
 
 export interface AlbumRestrictions {
     reason?: "market" | "product" | "explicit";
-}
-
-export interface AlbumCopyright {
-    text?: string;
-    type?: string;
 }
 
 export interface AlbumExternalIDs {
