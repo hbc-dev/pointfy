@@ -22,7 +22,7 @@ export interface ArtistRelatedArtistsGetterOptions {
 }
 
 export interface SearchByNameResponseArtist {
-    artists?: SearchByNameProperties<SimplifiedArtist>
+    artists?: ArtistPages;
 }
 
 export interface Artist extends SimplifiedArtist {
@@ -49,3 +49,5 @@ export interface SimplifiedArtist {
 export interface ArtistExternalURLS {
     spotify?: string;
 }
+
+export type ArtistPages = SearchByNameProperties<Artist>;

@@ -20,7 +20,15 @@ import {
     available_genres,
     NewReleasesGetterOptions,
     AudioBookGetterOptions,
-    AudioBook
+    AudioBook,
+    ChaptersPages,
+    AudioBookChapetersGetterOptions,
+    CategoryGetterOptions,
+    Category,
+    CategoriesGetterOptions,
+    CategoryPages,
+    Chapter,
+    ChapterGetterOptions
 } from "../@types";
 
 export class Client {
@@ -71,7 +79,7 @@ export class Client {
         let {id, market} = options;
 
         const httpRequest = replace(point.url, {
-            $id: id.trim(),
+            $id: id,
             $market: market ? `?market=${market}` : ""
         });
         
@@ -93,7 +101,7 @@ export class Client {
         let {id, market, limit, offset} = options;
 
         const httpRequest = replace(point.tracks, {
-            $id: id.trim(),
+            $id: id,
             $market: market ? `market=${market}` : "",
             $limit: limit ?? 20,
             $offset: offset ?? 0
@@ -244,7 +252,97 @@ export class Client {
         return response;
     }
 
-    async searchAudioBookChapters(options): Promise<void> {        
+    async searchAudioBookChapters(options: AudioBookChapetersGetterOptions): Promise<ChaptersPages> {
+        const point = points.audio_books;
+        let {id, limit, offset, market} = options;
+        
+        let httpRequest = replace(point.chapters, {
+            $id: id,
+            $limit: limit ?? 20,
+            $offset: offset ?? 0,
+            $market: market ? `&market=${market}` : ""
+        });
+
+        let request = await fetch(httpRequest, {
+            method: "GET",
+            headers: {
+                "Authorization" : `Bearer ${(await this._token).access_token}`
+            }
+        });
+
+        let response = await request.json();
+
+        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
+        return response;
+    }
+
+    async searchCategory(options: CategoryGetterOptions): Promise<Category> {
+        const point = points.categories;
+        let {category_id, country, locale} = options;
+        
+        let httpRequest = replace(point.url, {
+            $category_id: (country && locale)? `${category_id}?$country&$locale` : country ? `${category_id}?$country` : locale ? `${category_id}?$locale` : category_id,
+            $country: country ? `country=${country}` : "",
+            $locale: locale ? `locale=${locale}` : ""
+        });
+
+        let request = await fetch(httpRequest, {
+            method: "GET",
+            headers: {
+                "Authorization" : `Bearer ${(await this._token).access_token}`
+            }
+        });
+
+        let response = await request.json();
+
+        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
+        return response;
+    }
+
+    async searchCategories(options: CategoriesGetterOptions = {}): Promise<CategoryPages> {
+        const point = points.categories;
+        let {country, locale, limit, offset} = options;
+
+        let httpRequest = replace(point.several, {
+            $limit: limit ?? 20,
+            $offset: offset ?? 0,
+            $country: country ? `&country=${country}` : "",
+            $locale: locale ? `&locale=${locale}` : ""
+        });
+
+        let request = await fetch(httpRequest, {
+            method: "GET",
+            headers: {
+                "Authorization" : `Bearer ${(await this._token).access_token}`
+            }
+        });
+
+        let response = await request.json();
+
+        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`)
+        return response.categories;
+    }
+
+    async searchChapter(options: ChapterGetterOptions): Promise<Chapter> {
+        const point = points.chapters;
+        let {id, market} = options;
+
+        const httpRequest = replace(point.url, {
+            $id: id,
+            $market: market ? `?market=${market}` : ""
+        });
+        
+        let request = await fetch(httpRequest, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${(await this._token).access_token}`
+            }
+        });
+
+        let response = await request.json();
+        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
+
+        return response;
     }
 
     // some functions to manage the response

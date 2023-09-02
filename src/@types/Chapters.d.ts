@@ -1,7 +1,12 @@
-import {Images, SearchByNameProperties, available_markets} from "./index";
+import {AudioBook, Images, SearchByNameProperties, available_markets} from "./index";
+
+export interface ChapterGetterOptions {
+    id: string;
+    market?: available_markets;
+}
 
 export interface Chapter extends SimplifiedChapter {
-    
+    audiobook: AudioBook;
 }
 
 export interface SimplifiedChapter {

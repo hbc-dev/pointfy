@@ -5,6 +5,13 @@ export interface AudioBookGetterOptions {
     market?: available_markets;
 }
 
+export interface AudioBookChapetersGetterOptions {
+    id: string;
+    market?: available_markets;
+    limit?: number;
+    offset?: number;
+}
+
 export interface AudioBook extends SimplifiedAudioBook {
     external_urls: AudioBookExternalURLs;
     chapters: ChaptersPages;

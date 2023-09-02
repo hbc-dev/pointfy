@@ -14,6 +14,8 @@ import relatedArtist from "./relatedArtist.test"
 import marketsList from "./marketsList.test";
 import genresList from "./genresList.test";
 import searchAudioBook from "./searchAudioBook.test";
+import chaptersList from "./chaptersList.test";
+import categoriesList from "./categoriesList.test";
 
 (async () => {
     // init a client instance
@@ -101,4 +103,27 @@ import searchAudioBook from "./searchAudioBook.test";
             limit: 1
         }
     });
+
+    // get audiobook chapters => Server error
+    // chaptersList({
+    //     client,
+    //     searchOptions: {
+    //         name: "Game of Thrones",
+    //         type: "audiobook",
+    //         limit: 1
+    //     }
+    // });
+
+    // get categories list (searchCategory works properly)
+    categoriesList({client});
+
+    // get chapter
+    // without search a book by id is impossible to find chapters id
+    /* *** CODE EXAMPLE ***
+    let chapter = client.searchChapter({
+        id: "YOUR_CHAPTER_ID"
+    });
+
+    console.debug(chapter);
+    */
 })();
