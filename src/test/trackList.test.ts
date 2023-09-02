@@ -10,7 +10,7 @@ function redable(value: number): string {// ms to mm:ss
     let date = new Date(value);
     let seconds = date.getSeconds();
 
-    return date.getMinutes() + ':' + (seconds < 9 ? `0${seconds}` : `${seconds}`);
+    return date.getMinutes() + ':' + (seconds <= 9 ? `0${seconds}` : `${seconds}`);
 }
 
 export default async function getTrackList(options: Options):  Promise<void> {    
@@ -21,5 +21,5 @@ export default async function getTrackList(options: Options):  Promise<void> {
     .map(track => `${track.track_number} ${track.name} - ${redable(track.duration_ms)}`).join('\n');
     // map of all tracks. Example: 1 TrackName - 3:12
 
-    console.log(`\nFound ${tracks.total} tracks.\n\n${list}`);// debug the track list
+    // console.log(`\nFound ${tracks.total} tracks.\n\n${list}`);// debug the track list
 }

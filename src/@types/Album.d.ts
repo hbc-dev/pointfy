@@ -1,6 +1,10 @@
-import {available_markets} from "./index";
-import {SimplifiedArtist} from "./Artist";
-import {SimplifiedTrack} from "./Track";
+import {
+    available_markets,
+    Images,
+    SimplifiedArtist,
+    SimplifiedTrack,
+    SearchByNameProperties
+} from "./index";
 
 export interface AlbumGetterOptions {
     id: string;
@@ -32,12 +36,6 @@ export interface Album extends SimplifiedAlbum {
 
 export interface AlbumExternalURLS {
     spotify?: string;
-}
-
-export interface AlbumImages {
-    url: string;
-    height: number;
-    width: number;
 }
 
 export interface AlbumRestrictions {
@@ -72,7 +70,7 @@ export interface SimplifiedAlbum {
     external_urls: AlbumExternalURLS;
     href: string;
     id: string;
-    images: Array<AlbumImages>;
+    images: Array<Images>;
     name: string;
     release_date: string;
     release_date_precision: "year" | "month" | "day";
@@ -81,3 +79,9 @@ export interface SimplifiedAlbum {
     uri: string;
     artists: Array<SimplifiedArtist>
 }
+
+export interface SearchByNameResponseAlbums {
+    albums?: AlbumPages;
+}
+
+export type AlbumPages = SearchByNameProperties<SimplifiedAlbum>;

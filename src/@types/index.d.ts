@@ -17,3 +17,9 @@ export interface AccessToken {
     expires_in: number;
     expires_date: number;
 }
+
+export interface Images {
+    url: string;
+    height: number;
+    width: number;
+}

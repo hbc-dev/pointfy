@@ -1,4 +1,8 @@
-import {QueryAlbum, SimplifiedAlbum} from "./Album";
+import {
+    QueryAlbum,
+    SearchByNameResponseAlbums,
+    SearchByNameResponseArtist
+} from "./index";
 
 export interface SearchByNameOptions {
     name: string,
@@ -14,11 +18,8 @@ export interface QueryOptions extends QueryAlbum {
     genre?: string;
 }
 
-export interface SearchByNameResponseAlbums {
-    albums?: SearchByNameProperties<SimplifiedAlbum>;
-}
-
-export interface SearchByNameResponse extends SearchByNameResponseAlbums {}
+export interface SearchByNameResponse extends 
+SearchByNameResponseAlbums, SearchByNameResponseArtist {}
 
 export interface SearchByNameProperties<Item> {
     href: string;

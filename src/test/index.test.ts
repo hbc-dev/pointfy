@@ -6,6 +6,10 @@ config();
 import getTrackList from "./trackList.test";
 import refreshToken from "./refreshToken.test";
 import searchAlbum from "./searchAlbum.test";
+import searchArtist from "./searchArtist.test";
+import searchAlbumsChart from "./searchAlbumsChart.test";
+import topTenTracks from "./topTenTracks.test";
+import relatedArtist from "./relatedArtist.test"
 
 (async () => {
     // init a client instance
@@ -15,7 +19,7 @@ import searchAlbum from "./searchAlbum.test";
     });
 
     // get and refresh the token
-    refreshToken(client);
+    // refreshToken(client); => only for the test
 
     // search album by name and id
     searchAlbum({
@@ -35,6 +39,43 @@ import searchAlbum from "./searchAlbum.test";
         preferences: {
             id: "3FgvMxabfL5UtlcPzASEhh",
             limit: 50,
+        }
+    });
+
+    // search artist by name and id
+    searchArtist({
+        client,
+        searchOptions: {
+            name: "Kanye West",
+            type: "artist",
+            limit: 1,
+        }
+    });
+
+    // search albums of an artist by id
+    searchAlbumsChart({
+        client,
+        searchOptions: {
+            id: "06HL4z0CvFAxyc27GXpf02",
+            include_groups: ["album"],
+            limit: 50
+        }
+    });
+
+    // search the top 10 of an artist by id
+    topTenTracks({
+        client,
+        searchOptions: {
+            id: "6goQbtqjPhPns8RVRXTyp7",
+            market: "ES" // spotify api bug - must be present
+        }
+    });
+
+    // search the related artist by id
+    relatedArtist({
+        client,
+        searchOptions: {
+            id: "5szilpXHcwOqnyKLqGco5j"
         }
     });
 })();

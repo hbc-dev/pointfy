@@ -1,8 +1,9 @@
-import {available_markets} from "./index";
-import {SimplifiedArtist} from "./Artist";
+import {SimplifiedAlbum, available_markets, SimplifiedArtist, Artist} from "./index";
 
-export interface Track {
-
+export interface Track extends SimplifiedTrack {
+    album?: SimplifiedAlbum;
+    external_ids?: TrackExternalIDs;
+    popularity?: number;
 }
 
 export interface SimplifiedTrack {
@@ -39,4 +40,10 @@ export interface TrackLinkedFrom {
 
 export interface TrackExternalURLS {
     spotify?: string;
+}
+
+export interface TrackExternalIDs {
+    isrc?: string;
+    ean?: string;
+    upc?: string;
 }

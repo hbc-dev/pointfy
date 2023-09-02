@@ -8,7 +8,14 @@ import {
     SearchByNameOptions,
     SearchByNameResponse,
     AlbumTrack,
-    AlbumTracksGetterOptions
+    AlbumTracksGetterOptions,
+    ArtistGetterOptions,
+    Artist,
+    AlbumPages,
+    ArtistAlbumsGetterOptions,
+    Track,
+    ArtistTopTracksGetterOptions,
+    ArtistRelatedArtistsGetterOptions
 } from "../@types";
 
 export class Client {
@@ -98,6 +105,93 @@ export class Client {
 
         if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
         return response;
+    }
+
+    async searchArtist(options: ArtistGetterOptions): Promise<Artist> {
+        const point = points.artists;
+
+        let httpRequest = replace(point.url, {
+            $id: options.id
+        });
+
+        let request = await fetch(httpRequest, {
+            method: "GET",
+            headers: {
+                "Authorization" : `Bearer ${(await this.token).access_token}`
+            }
+        });
+
+        let response = await request.json();
+
+        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
+        return response;
+    }
+
+    async searchArtistAlbums(options: ArtistAlbumsGetterOptions): Promise<AlbumPages> {
+        const point = points.artists;
+        let {id, market, include_groups, offset, limit} = options;
+
+        let httpRequest = replace(point.albums, {
+            $id: id,
+            $market: market ? `&market=${market}` : "",
+            $include_groups: include_groups ? `&include_groups=${include_groups.join(',')}` : "",
+            $limit: limit ?? 20,
+            $offset: offset ?? 0
+        });
+
+        let request = await fetch(httpRequest, {
+            method: "GET",
+            headers: {
+                "Authorization" : `Bearer ${(await this._token).access_token}`
+            }
+        });
+
+        let response = await request.json();
+
+        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`)
+        return response;
+    }
+
+    async searchArtistTopTracks(options: ArtistTopTracksGetterOptions): Promise<Array<Track>> {
+        const point = points.artists;
+        let {id, market} = options;
+
+        let httpRequest = replace(point.top_tracks, {
+            $id: id,
+            $market: market ? `?market=${market}` : ""
+        });
+
+        let request = await fetch(httpRequest, {
+            method: "GET",
+            headers: {
+                "Authorization" : `Bearer ${(await this._token).access_token}`
+            }
+        });
+
+        let response = await request.json();
+        
+        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`)
+        return response.tracks;
+    }
+
+    async searchArtistRelatedArtists(options: ArtistRelatedArtistsGetterOptions): Promise<Array<Artist>> {
+        const point = points.artists;
+
+        let httpRequest = replace(point.related_artists, {
+            $id: options.id
+        });
+
+        let request = await fetch(httpRequest, {
+            method: "GET",
+            headers: {
+                "Authorization" : `Bearer ${(await this.token).access_token}`
+            }
+        });
+
+        let response = await request.json();
+
+        if (request.status !== 200) throw new Error(`${request.statusText} - ${response.error.message}`);
+        return response.artists;
     }
 
     // some functions to manage the response

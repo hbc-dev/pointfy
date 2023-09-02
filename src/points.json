@@ -16,5 +16,11 @@
     },
     "search" : {
         "url" : "https://api.spotify.com/v1/search?q=$name $query&type=$type&limit=$limit&offset=$offset&include_external=$include_external"
+    },
+    "artists" : {
+        "url" : "https://api.spotify.com/v1/artists/$id",
+        "albums" : "https://api.spotify.com/v1/artists/$id/albums?limit=$limit$market&offset=$offset$include_groups",
+        "top_tracks" : "https://api.spotify.com/v1/artists/$id/top-tracks$market",
+        "related_artists" : "https://api.spotify.com/v1/artists/$id/related-artists"
     }
 }
