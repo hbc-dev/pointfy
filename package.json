@@ -4,14 +4,43 @@
     "dotenv": "^16.3.1"
   },
   "name": "pointfy",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "main": "./src/structures/Client",
+  "homepage": "https://github.com/hbc-dev/pointfy#readme",
+  "bugs": "https://github.com/hbc-dev/pointfy/issues",
+  "funding": {
+    "url": "https://paypal.me/pagos3217",
+    "type": "paypal"
+  },
+  "repository": {
+    "url": "https://github.com/hbc-dev/pointfy",
+    "type": "git"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_OPTIONS='--no-warnings' ts-node ./src/test/index.test"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "keywords": [
+    "spotify",
+    "api",
+    "non-dependant",
+    "music",
+    "web service",
+    "typescript",
+    "node"
+  ],
+  "author": {
+    "name": "hbc",
+    "url": "https://x.com/hbc_167" 
+  },
+  "license": "MIT",
+  "description": "A spotify module",
+  "files": [
+    "./src/structures",
+    "./src/utils",
+    "./src/points.json",
+    "./src/@types",
+    "./LICENSE",
+    "./tsconfig.json",
+    "./README.md"
+  ]
 }

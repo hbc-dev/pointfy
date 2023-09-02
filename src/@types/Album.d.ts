@@ -4,7 +4,8 @@ import {
     SimplifiedArtist,
     SimplifiedTrack,
     SearchByNameProperties,
-    Copyrights
+    Copyrights,
+    available_genres
 } from "./index";
 
 export interface AlbumGetterOptions {
@@ -36,7 +37,7 @@ export interface Album extends SimplifiedAlbum {
     tracks: Array<AlbumTrack>;
     copyrights: Array<Copyrights>;
     external_ids: AlbumExternalIDs;
-    genres: Array<string>;
+    genres: Array<available_genres>;
     label: string;
     popularity: number;
 }

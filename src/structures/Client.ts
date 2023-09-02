@@ -244,8 +244,7 @@ export class Client {
         return response;
     }
 
-    async searchAudioBookChapters(options): Promise<void> {
-        
+    async searchAudioBookChapters(options): Promise<void> {        
     }
 
     // some functions to manage the response

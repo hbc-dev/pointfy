@@ -2,10 +2,13 @@
     "compilerOptions": {
         "resolveJsonModule": true,
         "esModuleInterop": true,
+        "noImplicitAny": false,
         "lib": [
             "ES2022",
             "DOM"
         ],
+        "noImplicitReturns": true,
+        "strictNullChecks": false
     },
     "files": ["./src/test/index.test.ts"]
 }

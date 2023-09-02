@@ -1,4 +1,4 @@
-import { Images, SearchByNameProperties, available_markets } from "./index";
+import { Images, SearchByNameProperties, available_genres, available_markets } from "./index";
 
 export interface ArtistGetterOptions {
     id: string;
@@ -27,7 +27,7 @@ export interface SearchByNameResponseArtist {
 
 export interface Artist extends SimplifiedArtist {
     followers?: ArtistFollowers;
-    genres?: Array<string>;
+    genres?: Array<available_genres>;
     images?: Array<Images>;
     popularity?: number;
 }
