@@ -7,7 +7,7 @@ interface Options {
 export default function marketList(options: Options): void {
     let {client} = options;
 
-    let genres = client.getGenres();
+    let genres = client.genres;
 
     // console.log(`Available genres (${genres.length}):\n\n${genres.join("\n")}`);
 }

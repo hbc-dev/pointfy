@@ -34,11 +34,15 @@ import {
 export class Client {
     public readonly clientId: string;
     public readonly clientSecret: string;
+    public readonly markets: Array<available_markets>;
+    public readonly genres: Array<available_genres>;
     private _token?: AccessToken;
 
     constructor(options: ClientOptions) {
         this.clientId = options.clientId;
         this.clientSecret = options.clientSecret;
+        this.markets = <Array<available_markets>>points.markets;
+        this.genres = <Array<available_genres>>points.genres;
     }
 
     async getToken(): Promise<AccessToken> {
@@ -289,13 +293,5 @@ export class Client {
         });
 
         return response;
-    }
-
-    getMarkets(): Array<available_markets> {
-        return <Array<available_markets>>points.markets;
-    }
-
-    getGenres(): Array<available_genres> {
-        return <Array<available_genres>>points.genres;
     }
 }
