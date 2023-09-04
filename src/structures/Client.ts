@@ -1,7 +1,7 @@
 import points from "../points.json";
-import { replace, request } from "../utils/index";
+import { request } from "../utils/index";
 import {
-    Options,
+    ClientOptions,
     AccessToken,
     AlbumGetterOptions,
     Album,
@@ -28,7 +28,7 @@ import {
     CategoriesGetterOptions,
     CategoryPages,
     Chapter,
-    ChapterGetterOptions
+    ChapterGetterOptions,
 } from "../@types";
 
 export class Client {
@@ -36,7 +36,7 @@ export class Client {
     public readonly clientSecret: string;
     private _token?: AccessToken;
 
-    constructor(options: Options) {
+    constructor(options: ClientOptions) {
         this.clientId = options.clientId;
         this.clientSecret = options.clientSecret;
     }
@@ -73,7 +73,7 @@ export class Client {
             url: points.albums.url,
             values: {
                 $id: id,
-                market: market ? `?market=${market}` : ""
+                $market: market ? `?market=${market}` : ""
             }
         });
 
@@ -271,7 +271,7 @@ export class Client {
         let queryString = "";
 
         if (query) for (let key of Object.keys(query)) {
-            queryString += ` ${key}:${query[key]}`
+            queryString += ` ${key}:${query[key]}`;
         }
 
         const response = await request({

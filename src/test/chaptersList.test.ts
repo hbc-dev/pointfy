@@ -13,7 +13,7 @@ function redable(value: number): string {// ms to mm:ss
     return date.getMinutes() + ':' + (seconds <= 9 ? `0${seconds}` : `${seconds}`);
 }
 
-export default async function chapterList(options: Options): Promise<void> {
+export default async function chaptersList(options: Options): Promise<void> {
     let {client, searchOptions} = options;
 
     let id = (await client.searchByName(searchOptions)).audiobooks?.items[0].id;

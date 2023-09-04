@@ -1,4 +1,4 @@
-import {SimplifiedAlbum, available_markets, SimplifiedArtist} from "./index";
+import {SimplifiedAlbum, available_markets, SimplifiedArtist, SearchByNameResponse, SearchByNameProperties} from "./index";
 
 export interface Track extends SimplifiedTrack {
     album?: SimplifiedAlbum;
@@ -47,3 +47,9 @@ export interface TrackExternalIDs {
     ean?: string;
     upc?: string;
 }
+
+export interface SearchByNameResponseTrack {
+    tracks?: TrackPages;
+}
+
+export type TrackPages = SearchByNameProperties<Track>;

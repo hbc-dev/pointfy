@@ -2,10 +2,10 @@ import replace from "./replace";
 import { Client } from "../structures/Client";
 import points from "../points.json";
 
-type RequestType = "bearer_token_action" | "get_access_token";
+type RequestType = "bearer_token_action" | "get_access_token" | "get_embed";
 
 interface RequestOptions {
-    client: Client;
+    client?: Client;
     type: RequestType;
     url: string;
     values?: Object;
@@ -19,6 +19,8 @@ export default async function request(options: RequestOptions): Promise<any> {
     let response: any;// the response object
 
     if (type == "bearer_token_action") {
+        if (!client) throw new Error(`Invalid client`);
+
         httpRequest = replace(url, values);
         request = await fetch(httpRequest, {
             method: "GET",
@@ -29,6 +31,8 @@ export default async function request(options: RequestOptions): Promise<any> {
 
         response = await request.json();
     } else if (type == "get_access_token") {
+        if (!client) throw new Error(`Invalid client`);
+        
         request = await fetch(url, {
             method: "POST",
             headers: {
@@ -41,8 +45,12 @@ export default async function request(options: RequestOptions): Promise<any> {
         });
 
         response = await request.json();
+    } else if (type == "get_embed") {
+        httpRequest = replace(url, values);
+        request = await fetch(httpRequest);
+        response = await request.json();
     }
 
-    if (request.status !== 200) throw new Error(`[${request.status}] ${request.statusText} - ${response.error?.message}`);
+    if (request.status !== 200) throw new Error(`[${request.status}] ${request.statusText} - ${response?.error.message}`);
     return response;
 }

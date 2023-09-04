@@ -1,5 +1,5 @@
-import {Client} from "../structures/Client";
-import {config} from "dotenv";
+import { Client, Embed } from "../structures/index";
+import { config } from "dotenv";
 config();
 
 // EXAMPLES
@@ -25,7 +25,7 @@ import categoriesList from "./categoriesList.test";
     });
 
     // get and refresh the token
-    // refreshToken(client); => only for the test
+    // refreshToken(client); // => only for the test
 
     // search album by name and id
     searchAlbum({
@@ -120,10 +120,28 @@ import categoriesList from "./categoriesList.test";
     // get chapter
     // without search a book by id is impossible to find chapters id
     /* *** CODE EXAMPLE ***
-    let chapter = client.searchChapter({
+    let chapter = await client.searchChapter({
         id: "YOUR_CHAPTER_ID"
     });
 
     console.debug(chapter);
+
     */
+
+    // get an episode name (Note: needed scopes)
+    // let episode = await client.searchByName({
+    //     name: "T",
+    //     type: "episode",
+    // });s
+    // console.log(episode.episodes); // => []
+
+    // get an embed => Note: shows, audiobooks and chapters dont work properly
+    let embed = new Embed({
+        item_type: "track",
+        item_id: "30LyNzKtSteS5DNDp1iuuy"
+    })
+    .setType("album")
+    .setId("32Ohw6qrdYn6W0qARez5HM");
+
+    // console.log(await embed.toJSON());
 })();

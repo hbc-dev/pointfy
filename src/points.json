@@ -8,9 +8,9 @@
         "body" : "grant_type=client_credentials&client_id=$CLIENT_ID&client_secret=$CLIENT_SECRET"
     },
     "albums" : {
-        "url" : "https://api.spotify.com/v1/albums/$id",
+        "url" : "https://api.spotify.com/v1/albums/$id$market",
         "tracks" : "https://api.spotify.com/v1/albums/$id/tracks?limit=$limit&offset=$offset&$market",
-        "new_releases" : "https://api.spotify.com/v1/browse/new-releases?limit=$limit&offset=$offset"
+        "new_releases" : "https://api.spotify.com/v1/browse/new-releases?limit=$limit&offset=$offset$country"
     },
     "search" : {
         "url" : "https://api.spotify.com/v1/search?q=$name $query&type=$type&limit=$limit&offset=$offset&include_external=$include_external"
@@ -22,7 +22,7 @@
         "related_artists" : "https://api.spotify.com/v1/artists/$id/related-artists"
     },
     "audio_books" : {
-        "url" : "https://api.spotify.com/v1/audiobooks/$id",
+        "url" : "https://api.spotify.com/v1/audiobooks/$id$market",
         "chapters" : "https://api.spotify.com/v1/audiobooks/$id/chapters?limit=$limit&offset=$offset$market"
     },
     "categories" : {
@@ -31,6 +31,13 @@
     },
     "chapters" : {
         "url" : "https://api.spotify.com/v1/chapters/$id$market"
+    },
+    "episodes" : {
+        "url" : "https://api.spotify.com/v1/episodes/$id$market"
+    },
+    "embeds" : {
+        "url" : "https://open.spotify.com/oembed?url=$url",
+        "base" : "https://open.spotify.com/$type/$id"
     },
     "markets" : ["AD", "AE", "AG", "AL", "AM", "AO", "AR", "AT", "AU", "AZ", "BA", "BB", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BN", "BO", "BR", "BS", "BT", "BW", "BY", "BZ", "CA", "CD", "CG", "CH", "CI", "CL", "CM", "CO", "CR", "CV", "CW", "CY", "CZ", "DE", "DJ", "DK", "DM", "DO", "DZ", "EC", "EE", "EG", "ES", "ET", "FI", "FJ", "FM", "FR", "GA", "GB", "GD", "GE", "GH", "GM", "GN", "GQ", "GR", "GT", "GW", "GY", "HK", "HN", "HR", "HT", "HU", "ID", "IE", "IL", "IN", "IQ", "IS", "IT", "JM", "JO", "JP", "KE", "KG", "KH", "KI", "KM", "KN", "KR", "KW", "KZ", "LA", "LB", "LC", "LI", "LK", "LR", "LS", "LT", "LU", "LV", "LY", "MA", "MC", "MD", "ME", "MG", "MH", "MK", "ML", "MN", "MO", "MR", "MT", "MU", "MV", "MW", "MX", "MY", "MZ", "NA", "NE", "NG", "NI", "NL", "NO", "NP", "NR", "NZ", "OM", "PA", "PE", "PG", "PH", "PK", "PL", "PS", "PT", "PW", "PY", "QA", "RO", "RS", "RW", "SA", "SB", "SC", "SE", "SG", "SI", "SK", "SL", "SM", "SN", "SR", "ST", "SV", "SZ", "TD", "TG", "TH", "TJ", "TL", "TN", "TO", "TR", "TT", "TV", "TW", "TZ", "UA", "UG", "US", "UY", "UZ", "VC", "VE", "VN", "VU", "WS", "XK", "ZA", "ZM", "ZW"],
     "genres" : ["acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal", "bluegrass", "blues", "bossanova", "brazil", "breakbeat", "british", "cantopop", "chicago-house", "children", "chill", "classical", "club", "comedy", "country", "dance", "dancehall", "death-metal", "deep-house", "detroit-techno", "disco", "disney", "drum-and-bass", "dub", "dubstep", "edm", "electro", "electronic", "emo", "folk", "forro", "french", "funk", "garage", "german", "gospel", "goth", "grindcore", "groove", "grunge", "guitar", "happy", "hard-rock", "hardcore", "hardstyle", "heavy-metal", "hip-hop", "holidays", "honky-tonk", "house", "idm", "indian", "indie", "indie-pop", "industrial", "iranian", "j-dance", "j-idol", "j-pop", "j-rock", "jazz", "k-pop", "kids", "latin", "latino", "malay", "mandopop", "metal", "metal-misc", "metalcore", "minimal-techno", "movies", "mpb", "new-age", "new-release", "opera", "pagode", "party", "philippines-opm", "piano", "pop", "pop-film", "post-dubstep", "power-pop", "progressive-house", "psych-rock", "punk", "punk-rock", "r-n-b", "rainy-day", "reggae", "reggaeton", "road-trip", "rock", "rock-n-roll", "rockabilly", "romance", "sad", "salsa", "samba", "sertanejo", "show-tunes", "singer-songwriter", "ska", "sleep", "songwriter", "soul", "soundtracks", "spanish", "study", "summer", "swedish", "synth-pop", "tango", "techno", "trance", "trip-hop", "turkish", "work-out", "world-music"],

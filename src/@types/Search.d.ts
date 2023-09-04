@@ -2,7 +2,9 @@ import {
     QueryAlbum,
     SearchByNameResponseAlbums,
     SearchByNameResponseArtist,
-    SearchByNameResponseAudioBook
+    SearchByNameResponseAudioBook,
+    SearchByNameResponseTrack,
+    SearchByNameResponseEpisode
 } from "./index";
 
 export interface SearchByNameOptions {
@@ -20,7 +22,11 @@ export interface QueryOptions extends QueryAlbum {
 }
 
 export interface SearchByNameResponse extends 
-SearchByNameResponseAlbums, SearchByNameResponseArtist, SearchByNameResponseAudioBook {}
+SearchByNameResponseAlbums,
+SearchByNameResponseArtist,
+SearchByNameResponseTrack,
+SearchByNameResponseAudioBook,
+SearchByNameResponseEpisode {}
 
 export interface SearchByNameProperties<Item> {
     href: string;
