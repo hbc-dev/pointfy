@@ -16,6 +16,7 @@ import genresList from "./genresList.test";
 import searchAudioBook from "./searchAudioBook.test";
 import chaptersList from "./chaptersList.test";
 import categoriesList from "./categoriesList.test";
+import playlistTrackList from "./playlistTrackList.test";
 
 (async () => {
     // init a client instance
@@ -144,4 +145,28 @@ import categoriesList from "./categoriesList.test";
     .setId("32Ohw6qrdYn6W0qARez5HM");
 
     // console.log(await embed.toJSON());
+
+    // get a playlist
+    playlistTrackList({
+        client,
+        preferences: {
+            playlist_id: "7ffldKoEUUje3iSZyGf06o",
+            fields: {
+                name: true,
+                owner: {
+                    display_name: true
+                },
+                tracks: {
+                    total: true,
+                    items: {
+                        is_local: true,
+                        track: {
+                            name: true,
+                            duration_ms: true,
+                        }
+                    }
+                }
+            }
+        }
+    });
 })();

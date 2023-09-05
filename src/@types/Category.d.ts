@@ -1,4 +1,4 @@
-import { Images, SearchByNameProperties, available_markets } from "./index";
+import { Image, SearchByNameProperties, available_markets } from "./index";
 
 export interface CategoryGetterOptions {
     category_id: string;
@@ -15,7 +15,7 @@ export interface CategoriesGetterOptions {
 
 export interface Category {
     href: string;
-    icons: Array<Images>;
+    icons: Array<Image>;
     id: string;
     name: string;
 }

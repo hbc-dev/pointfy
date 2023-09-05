@@ -1,4 +1,4 @@
-import { Images, SearchByNameProperties, Show, available_markets } from "./index";
+import { ExternalURLs, Image, SearchByNameProperties, Show, available_markets } from "./index";
 
 export interface EpisodeGetterOptions {
     id: string;
@@ -15,10 +15,10 @@ export interface SimplifiedEpisode {
     html_description: string;
     duration_ms: number;
     explicit: boolean;
-    external_urls: EpisodeExternalURLs;
+    external_urls: ExternalURLs;
     href: string;
     id: string;
-    images: Array<Images>;
+    images: Array<Image>;
     is_externally_hosted: boolean;
     is_playable: boolean;
     /**
@@ -37,10 +37,6 @@ export interface SimplifiedEpisode {
 
 export interface SearchByNameResponseEpisode {
     episodes?: EpisodePages;
-}
-
-export interface EpisodeExternalURLs {
-    spotify?: string;
 }
 
 export interface EpisodeResumePoint {

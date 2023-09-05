@@ -1,5 +1,5 @@
 import points from "../points.json";
-import { request } from "../utils/index";
+import { request, resolveFields } from "../utils/index";
 import {
     ClientOptions,
     AccessToken,
@@ -29,6 +29,8 @@ import {
     CategoryPages,
     Chapter,
     ChapterGetterOptions,
+    Playlist,
+    PlaylistGetterOptions,
 } from "../@types";
 
 export class Client {
@@ -263,6 +265,26 @@ export class Client {
             values: {
                 $id: id,
                 $market: market ? `?market=${market}` : ""
+            }
+        });
+
+        return response;
+    }
+
+    async searchPlaylist(options: PlaylistGetterOptions): Promise<Playlist> {
+        let {playlist_id, fields, market, additional_types} = options;
+
+        if (fields && typeof fields !== "string") fields = resolveFields(fields);
+
+        const response = await request({
+            client: this,
+            type: "bearer_token_action",
+            url: points.playlists.url,
+            values: {
+                $playlist_id: playlist_id,
+                $fields: fields,
+                $market: market ? `&market=${market}` : "",
+                $additional_types: additional_types ? `&additional_types=${additional_types.join(',')}` : ""
             }
         });
 

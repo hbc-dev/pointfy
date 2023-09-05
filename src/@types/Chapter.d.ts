@@ -1,4 +1,4 @@
-import {AudioBook, Images, SearchByNameProperties, available_markets} from "./index";
+import {AudioBook, ExternalURLs, Image, SearchByNameProperties, available_markets} from "./index";
 
 export interface ChapterGetterOptions {
     id: string;
@@ -17,10 +17,10 @@ export interface SimplifiedChapter {
     html_description: string;
     duration_ms: number;
     explicit: boolean;
-    external_urls: ChapterExternalURLs;
+    external_urls: ExternalURLs;
     href: string;
     id: string;
-    images: Array<Images>;
+    images: Array<Image>;
     is_playable: boolean;
     languages: Array<string>;
     name: string;
@@ -30,10 +30,6 @@ export interface SimplifiedChapter {
     type: "episode";
     uri: string;
     restrictions: ChapterRestrictions;
-}
-
-export interface ChapterExternalURLs {
-    spotify?: string;
 }
 
 export interface ChapterResumePoint {

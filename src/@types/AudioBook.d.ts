@@ -1,4 +1,4 @@
-import { ChaptersPages, Copyrights, Images, SearchByNameProperties, available_markets } from "./index";
+import { ChaptersPages, Copyrights, ExternalURLs, Image, SearchByNameProperties, available_markets } from "./index";
 
 export interface AudioBookGetterOptions {
     id: string;
@@ -13,7 +13,7 @@ export interface AudioBookChapetersGetterOptions {
 }
 
 export interface AudioBook extends SimplifiedAudioBook {
-    external_urls: AudioBookExternalURLs;
+    external_urls: ExternalURLs;
     chapters: ChaptersPages;
 }
 
@@ -27,7 +27,7 @@ export interface SimplifiedAudioBook {
     explicit: boolean;
     href: string;
     id: string;
-    images: Array<Images>;
+    images: Array<Image>;
     languages: Array<string>;
     media_type: string;
     name: string;
@@ -36,10 +36,6 @@ export interface SimplifiedAudioBook {
     type: "audiobook";
     uri: string;
     total_chapters: number;
-}
-
-export interface AudioBookExternalURLs {
-    spotify?: string;
 }
 
 export interface Author {

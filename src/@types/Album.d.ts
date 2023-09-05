@@ -1,11 +1,13 @@
 import {
     available_markets,
-    Images,
+    Image,
     SimplifiedArtist,
     SimplifiedTrack,
     SearchByNameProperties,
     Copyrights,
-    available_genres
+    available_genres,
+    ExternalURLs,
+    ExternalIDs
 } from "./index";
 
 export interface AlbumGetterOptions {
@@ -36,24 +38,14 @@ export interface QueryAlbum {
 export interface Album extends SimplifiedAlbum {
     tracks: Array<AlbumTrack>;
     copyrights: Array<Copyrights>;
-    external_ids: AlbumExternalIDs;
+    external_ids: ExternalIDs;
     genres: Array<available_genres>;
     label: string;
     popularity: number;
 }
 
-export interface AlbumExternalURLS {
-    spotify?: string;
-}
-
 export interface AlbumRestrictions {
     reason?: "market" | "product" | "explicit";
-}
-
-export interface AlbumExternalIDs {
-    isrc?: string;
-    ean?: string;
-    upc?: string;
 }
 
 export interface AlbumTrack {
@@ -70,10 +62,10 @@ export interface SimplifiedAlbum {
     album_type: "album" | "single" | "compilation";
     total_tracks: number;
     available_markets: Array<available_markets>;
-    external_urls: AlbumExternalURLS;
+    external_urls: ExternalURLs;
     href: string;
     id: string;
-    images: Array<Images>;
+    images: Array<Image>;
     name: string;
     release_date: string;
     release_date_precision: "year" | "month" | "day";
@@ -83,7 +75,7 @@ export interface SimplifiedAlbum {
     artists: Array<SimplifiedArtist>
 }
 
-export interface SearchByNameResponseAlbums {
+export interface SearchByNameResponseAlbum {
     albums?: AlbumPages;
 }
 

@@ -1,4 +1,4 @@
-import { Images, SearchByNameProperties, available_genres, available_markets } from "./index";
+import { ExternalURLs, Followers, Image, SearchByNameProperties, available_genres, available_markets } from "./index";
 
 export interface ArtistGetterOptions {
     id: string;
@@ -26,28 +26,19 @@ export interface SearchByNameResponseArtist {
 }
 
 export interface Artist extends SimplifiedArtist {
-    followers?: ArtistFollowers;
+    followers?: Followers;
     genres?: Array<available_genres>;
-    images?: Array<Images>;
+    images?: Array<Image>;
     popularity?: number;
 }
 
-export interface ArtistFollowers {
-    href?: string;
-    total?: number;
-}
-
 export interface SimplifiedArtist {
-    external_urls?: ArtistExternalURLS;
+    external_urls?: ExternalURLs;
     href?: string;
     id?: string;
     name?: string;
     type?: "artist";
     uri?: string;
-}
-
-export interface ArtistExternalURLS {
-    spotify?: string;
 }
 
 export type ArtistPages = SearchByNameProperties<Artist>;

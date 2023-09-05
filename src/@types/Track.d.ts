@@ -1,8 +1,8 @@
-import {SimplifiedAlbum, available_markets, SimplifiedArtist, SearchByNameResponse, SearchByNameProperties} from "./index";
+import {SimplifiedAlbum, available_markets, SimplifiedArtist, SearchByNameResponse, SearchByNameProperties, ExternalURLs, ExternalIDs} from "./index";
 
 export interface Track extends SimplifiedTrack {
     album?: SimplifiedAlbum;
-    external_ids?: TrackExternalIDs;
+    external_ids?: ExternalIDs;
     popularity?: number;
 }
 
@@ -12,7 +12,7 @@ export interface SimplifiedTrack {
     disc_number?: number;
     duration_ms?: number;
     explicit?: boolean;
-    external_urls?: TrackExternalURLS;
+    external_urls?: ExternalURLs;
     href?: string;
     id?: string;
     is_playable?: boolean;
@@ -31,21 +31,11 @@ export interface TrackRestrictions {
 }
 
 export interface TrackLinkedFrom {
-    external_urls?: TrackExternalURLS;
+    external_urls?: ExternalURLs;
     href?: string;
     id?: string;
     type?: "track";
     uri?: string;
-}
-
-export interface TrackExternalURLS {
-    spotify?: string;
-}
-
-export interface TrackExternalIDs {
-    isrc?: string;
-    ean?: string;
-    upc?: string;
 }
 
 export interface SearchByNameResponseTrack {

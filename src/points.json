@@ -35,6 +35,9 @@
     "episodes" : {
         "url" : "https://api.spotify.com/v1/episodes/$id$market"
     },
+    "playlists" : {
+        "url" : "https://api.spotify.com/v1/playlists/$playlist_id?fields=$fields$market$additional_types"
+    },
     "embeds" : {
         "url" : "https://open.spotify.com/oembed?url=$url",
         "base" : "https://open.spotify.com/$type/$id"
