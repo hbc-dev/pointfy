@@ -1,10 +1,19 @@
-import { ExternalURLs, Followers, Image, User, SearchByNameProperties, available_markets, SimplifiedUser, Episode, Track, PlaylistFields } from "./index";
+import { ExternalURLs, Followers, Image, User, SearchByNameProperties, available_markets, SimplifiedUser, Episode, Track, PlaylistFields, TracksByNamePropertiesFields } from "./index";
 
 export interface PlaylistGetterOptions {
     playlist_id: string;
     market?: available_markets;
     fields?: PlaylistFields | string;
     additional_types?: Array<"track" | "episode">;
+}
+
+export interface PlaylistTracksGetterOptions {
+    playlist_id: string;
+    market?: available_markets;
+    fields?: TracksByNamePropertiesFields | string;
+    additional_types?: Array<"track" | "episode">;
+    limit?: number;
+    offset?: number;
 }
 
 export interface Playlist extends SimplifiedPlaylist {
@@ -37,7 +46,7 @@ export interface PlaylistTracks {
     added_at?: string;
     added_by?: SimplifiedUser;
     is_local?: boolean;
-    track?: Track | Episode;
+    track?: Track & Episode;
 }
 
 export interface SearchByNameResponsePlaylist {
@@ -45,3 +54,5 @@ export interface SearchByNameResponsePlaylist {
 }
 
 export type PlaylistPages = SearchByNameProperties<SimplifiedPlaylist>;
+
+export type PlaylistTracksPages = SearchByNameProperties<PlaylistTracks>;

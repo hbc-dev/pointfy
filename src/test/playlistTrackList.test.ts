@@ -22,5 +22,5 @@ export default async function getTrackList(options: Options):  Promise<void> {
     let list = playlist.tracks?.items
     .map(track => `${track.track?.name} - ${redable(track.track?.duration_ms)} | ${is_local(track.is_local)}`).join('\n')
 
-    console.log(`\n${playlist.name} by ${playlist.owner?.display_name} with ${playlist.tracks?.total} tracks\n\n${list}`);// debug the track list
+    // console.log(`\n${playlist.name} by ${playlist.owner?.display_name} with ${playlist.tracks?.total} tracks\n\n${list}`);// debug the track list
 }

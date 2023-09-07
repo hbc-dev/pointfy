@@ -31,6 +31,8 @@ import {
     ChapterGetterOptions,
     Playlist,
     PlaylistGetterOptions,
+    PlaylistTracksGetterOptions,
+    PlaylistTracksPages,
 } from "../@types";
 
 export class Client {
@@ -282,7 +284,29 @@ export class Client {
             url: points.playlists.url,
             values: {
                 $playlist_id: playlist_id,
-                $fields: fields,
+                $fields: fields ?? "",
+                $market: market ? `&market=${market}` : "",
+                $additional_types: additional_types ? `&additional_types=${additional_types.join(',')}` : ""
+            }
+        });
+
+        return response;
+    }
+
+    async searchPlaylistTracks(options: PlaylistTracksGetterOptions): Promise<PlaylistTracksPages> {
+        let {playlist_id, market, additional_types, limit, offset, fields} = options;
+
+        if (fields && typeof fields !== "string") fields = resolveFields(fields);
+
+        const response = await request({
+            client: this,
+            type: "bearer_token_action",
+            url: points.playlists.tracks,
+            values: {
+                $playlist_id: playlist_id,// 3cEYpjA9oz9GiPac4AsH4n
+                $fields: fields ?? "",
+                $limit: limit ?? 20,
+                $offset: offset ?? 0,
                 $market: market ? `&market=${market}` : "",
                 $additional_types: additional_types ? `&additional_types=${additional_types.join(',')}` : ""
             }

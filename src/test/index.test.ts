@@ -169,4 +169,32 @@ import playlistTrackList from "./playlistTrackList.test";
             }
         }
     });
+
+    // get a playlist tracks
+    // let tracks = await client.searchPlaylistTracks({
+    //     playlist_id: "3cEYpjA9oz9GiPac4AsH4n",
+    //     limit: 100,
+    //     fields: {
+    //         total: true,
+    //         href: true,
+    //         items: {
+    //             added_by: {
+    //                 id: true,
+    //                 href: true,
+    //                 followers: {
+    //                     total: true
+    //                 }
+    //             },
+    //             is_local: true,
+    //             track: {
+    //                 duration_ms: true,
+    //                 name: true,
+    //                 id: true,
+    //                 href: true
+    //             }
+    //         }
+    //     },
+    //     market: "ES"
+    // });
+    // console.log(tracks);
 })();

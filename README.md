@@ -12,7 +12,7 @@
 A simple, fast and non-dependant module to interact with the spotify API with NodeJS.
 
 * OOP (Object-oriented programming) module
-* Big coverage of the Spotify API (17/84 endpoints - 20%)
+* Big coverage of the Spotify API (18/84 endpoints - 21%)
 * Non-dependant
 * Built in TypeScript
 

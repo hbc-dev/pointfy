@@ -1,6 +1,6 @@
 export interface PlaylistFields {
     followers?: FollowersFields | boolean;
-    tracks?: SearchByNamePropertiesFields<PlaylistTracksFields> | boolean;
+    tracks?: TracksByNamePropertiesFields | boolean;
     collaborative?: boolean;
     description?: boolean;
     external_urls?: ExternalURLsFields | boolean;
@@ -14,6 +14,8 @@ export interface PlaylistFields {
     type?: boolean;
     uri?: boolean;
 }
+
+export type TracksByNamePropertiesFields = SearchByNamePropertiesFields<PlaylistTracksFields>;
 
 export interface PlaylistTracksFields {
     added_at?: boolean;
